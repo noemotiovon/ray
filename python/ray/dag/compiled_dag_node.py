@@ -589,7 +589,9 @@ class ExecutableTask:
         # is configured
         if self.output_type_hint.requires_comm_backend():
             comm_backend_group_id = _get_comm_backend_group_id(self.output_type_hint)
-            comm_backend_group = ChannelContext.get_current().communicators.get(comm_backend_group_id)
+            comm_backend_group = ChannelContext.get_current().communicators.get(
+                comm_backend_group_id
+            )
             assert comm_backend_group is not None
             self._send_stream = comm_backend_group.send_stream
         if self.input_type_hints:
@@ -1377,7 +1379,9 @@ class CompiledDAG:
             collective_op: Whether the communicator is used for a collective operation.
         """
         if None in actors:
-            raise ValueError("Driver cannot participate in the communication backend group.")
+            raise ValueError(
+                "Driver cannot participate in the communication backend group."
+            )
         if collective_op:
             type_hint = dag_node._collective_op.type_hint
         else:
@@ -2054,7 +2058,7 @@ class CompiledDAG:
         TODO (kevin85421): Avoid false negatives.
 
         Currently, a compiled graph may deadlock if there are communication backend
-        channels, and the readers have control dependencies on the same actor. 
+        channels, and the readers have control dependencies on the same actor.
         For example:
 
         actor1.a ---> actor2.f1

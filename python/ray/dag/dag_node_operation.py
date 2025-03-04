@@ -206,7 +206,8 @@ class _DAGOperationGraphNode:
         A node is a communication backend collective if it is a compute node and requires communication backend.
         """
         return (
-            self.operation.type == _DAGNodeOperationType.COMPUTE and self.requires_comm_backend
+            self.operation.type == _DAGNodeOperationType.COMPUTE
+            and self.requires_comm_backend
         )
 
     @property
@@ -214,7 +215,10 @@ class _DAGOperationGraphNode:
         """
         A node is a communication backend write if it is a write node and requires communication backend.
         """
-        return self.operation.type == _DAGNodeOperationType.WRITE and self.requires_comm_backend
+        return (
+            self.operation.type == _DAGNodeOperationType.WRITE
+            and self.requires_comm_backend
+        )
 
     @property
     def is_comm_backend_op(self) -> bool:
@@ -348,7 +352,9 @@ def _select_next_nodes(
         for collective_node_metadata in top_priority_node.collective_idxs:
             task_idx, op_type = collective_node_metadata
             collective_node = graph[task_idx][op_type]
-            assert collective_node.is_comm_backend_collective and collective_node.is_ready
+            assert (
+                collective_node.is_comm_backend_collective and collective_node.is_ready
+            )
             if collective_node != top_priority_node:
                 next_nodes.append(collective_node)
         assert len(next_nodes) == len(top_priority_node.collective_idxs)
