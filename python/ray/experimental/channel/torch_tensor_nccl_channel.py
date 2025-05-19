@@ -19,6 +19,7 @@ from ray.util.annotations import DeveloperAPI
 from ray.experimental.channel.accelerator_context import (
     AcceleratorContext,
     register_accelerator_context,
+    is_accelerator_context_registered,
 )
 
 if TYPE_CHECKING:
@@ -754,7 +755,7 @@ def _init_communicator(
 
     # Register accelerator context for all actors if accelerator is not default
     if accelerator_module_name and accelerator_communicator_cls:
-        if accelerator_module_name not in ("cpu", "cuda"):
+        if is_accelerator_context_registered:
             ray.get(
                 [
                     actor.__ray_call__.remote(

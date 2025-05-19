@@ -186,3 +186,16 @@ def register_accelerator_context(
     """
     accelerator_context = AcceleratorContext(torch_module_name, communicator_cls)
     AcceleratorContext.set(accelerator_context)
+
+
+def is_accelerator_context_registered():
+    """
+    Checks whether a custom accelerator context has been registered.
+
+    Returns:
+        bool: True if a custom accelerator context is registered
+              (_global_custom_context is not None), False otherwise.
+    """
+    if _global_custom_context is not None:
+        return True
+    return False
