@@ -17,7 +17,7 @@ _global_custom_context: Optional["AcceleratorContext"] = None
 class AcceleratorContext:
     """
     Provides a unified interface for managing different accelerator backends
-    This includes stram management, event creation, device context control,
+    This includes stream management, event creation, device context control,
     and communicator support for distributed communication.
     """
 

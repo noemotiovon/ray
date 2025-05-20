@@ -755,7 +755,7 @@ def _init_communicator(
 
     # Register accelerator context for all actors if accelerator is not default
     if accelerator_module_name and accelerator_communicator_cls:
-        if is_accelerator_context_registered:
+        if is_accelerator_context_registered():
             ray.get(
                 [
                     actor.__ray_call__.remote(
