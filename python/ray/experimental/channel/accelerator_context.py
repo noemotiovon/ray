@@ -1,7 +1,7 @@
 import threading
 import importlib
 import ray
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Optional, Type, ContextManager
 from contextlib import nullcontext
 from ray.experimental.channel.communicator import Communicator
 
@@ -108,16 +108,16 @@ class AcceleratorContext:
 
         return torch.device(f"{self._torch_module_name}:0")
 
-    def get_device_context(self, device):
+    def get_device_context(self, device: torch.device) -> ContextManager:
         """
         Retrieves the context manager for the specified accelerator device.
         There is no device context for CPU, returning a nullcontext.
 
         Args:
-            device (torch.device): The target device for which the context manager
-            is required.
+            device: The target device for which the context manager is required.
+
         Returns:
-            device_context: A context manager specific to the device type.
+            ContextManager: A context manager specific to the device type.
         """
         if device.type == "cpu":
             return nullcontext()
@@ -182,7 +182,7 @@ def register_accelerator_context(
 
     Args:
         torch_module_name: The name of the device module under torch.
-        communicator: The communicator class associated with the device.
+        communicator_cls: The communicator class associated with the device.
     """
     accelerator_context = AcceleratorContext(torch_module_name, communicator_cls)
     AcceleratorContext.set(accelerator_context)

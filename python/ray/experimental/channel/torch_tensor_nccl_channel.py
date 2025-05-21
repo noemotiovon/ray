@@ -746,6 +746,8 @@ def _init_communicator(
         use_communication_streams: Whether to use dedicated send and recv
                 streams for communication. If True, communication and computation
                 can be overlapped to improve performance.
+        accelerator_module_name: Optional name of the accelerator module to use.
+        accelerator_communicator_cls: Optional communicator class for the accelerator.
     """
     ctx = ChannelContext.get_current()
 
